@@ -35,6 +35,7 @@ https://packagecontrol.io/installation
 
 ### ansible.cfg
 * Ansible looks for an ansible.cfg file in the following places, in this order:
+
 1. File specified by the ANSIBLE_CONFIG environment variable
 2. ./ansible.cfg (ansible.cfg in the current directory)
 3. ~/.ansible.cfg (.ansible.cfg in your home directory)
