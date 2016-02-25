@@ -1,0 +1,40 @@
+---
+- hosts: example.hostname.com
+  vars:
+    example_var: this is a var
+  tasks:
+    - name: Use the command module
+      command: echo Tyler Durden
+      tags: fight_club
+
+    - name: Debug print a var
+      debug: var=example_var
+
+    - name: Install ruby package
+      package: name=ruby state=present
+  handlers:
+  tags:
+    - royale_with_cheese
+
+- hosts: example.hostname.com
+  remote_user: ubuntu
+  roles:
+    - role: example-role
+  tasks:
+    - name: Debug print role var from outside role
+      debug: var=simpson_family
+
+- hosts: example.hostname.com
+  tasks:
+    - name: Grab format output
+      shell: df -h < /dev/null
+      register: format_output
+      ignore_errors: yes
+
+    - name: Debug print
+      debug: var=format_output
+
+    - set_fact:
+        available_disks: "{{ (format_output.stdout|from_json) }}"
+    - debug: var=available_disks
+  tags: 2nd

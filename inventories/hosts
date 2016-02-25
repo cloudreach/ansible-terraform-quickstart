@@ -1,0 +1,11 @@
+example.hostname.com
+
+[example_group_a]
+example.hostname1.com
+
+[example_group_b]
+example.hostname2.com
+
+[example_groups:children]
+example_group_a
+example_group_b

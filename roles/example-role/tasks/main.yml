@@ -1,0 +1,17 @@
+---
+- name: Example role task with iteration
+  command: echo {{item}}
+  with_items: simpson_family
+  tags: Simpsons
+
+- name: Debug print template
+  debug: msg="{{ lookup('template', playbook_dir + '/roles/example-role/templates/example.conf.j2') }}"
+  tags: debug_template
+
+- name: Copy template
+  template: src=example.conf.j2 dest=/tmp/example.conf owner=ubuntu group=ubuntu
+  tags: template
+
+- name: Copy file
+  copy: src=example-static-file.txt dest=/tmp/example-static-file.txt owner=ubuntu group=ubuntu
+  tags: static

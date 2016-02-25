@@ -1,0 +1,15 @@
+Ansible Tutorial: https://serversforhackers.com/an-ansible-tutorial
+
+Ansible Examples (thorough, user made): https://gist.github.com/webstandardcss/9d1a293914d972399712
+
+Ansible Examples: https://github.com/ansible/ansible-examples
+
+Ansible Best Practices: http://docs.ansible.com/ansible/playbooks_best_practices.html
+
+Ansible Module Index: http://docs.ansible.com/ansible/modules_by_category.html
+
+Ansible Loops: http://docs.ansible.com/ansible/playbooks_loops.html
+
+Jinja2 Templating: http://jinja.pocoo.org/docs/dev/
+
+Ansible Quick Reference: https://github.com/lorin/ansible-quickref
