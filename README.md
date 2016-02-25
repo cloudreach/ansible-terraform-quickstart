@@ -1,3 +1,8 @@
+### Install
+```brew install ansible```
+or
+```pip install ansible```
+
 ### General
 * Ansible changes only deltas when possible
 * Uses SSH or paramiko to connect to remote hosts
