@@ -14,7 +14,7 @@ or
 * A playbook can be restarted from where it failed
 	* A .retry file is created in your $HOME dir by default
 
-### Text Editor setup
+### Text Editor setup with Syntax highlights (Optional)
 * Install sublime text
 ```brew cask install sublimetext-3```
 * Install package control
