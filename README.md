@@ -1,7 +1,41 @@
+### Concepts
+* Control Machine
+  * Machine running the Ansible playbook
+* Remote Hosts
+  * Machines Ansible is logging into to execute the playbook
+* Playbooks
+  * YAML files describing the end state of remote hosts
+* Inventories
+  * INI files describing remote hosts
+* Modules
+  * Ansible ships with a number of modules that can be executed directly on remote hosts
+  * Most of your Ansible code will be invoking these modules
+* Roles
+  * Ansible playbook code that can be re-used (libraries)
+  * Ansible galaxy is the community repository for roles
+* Variables
+  * Variables used within playbooks
+* Group Variables
+  * Variables defined for specific groups within inventories
+* Host Variables
+  * Variables defined for specific hosts
+* Facts
+  * Information that is discovered about remote nodes automatically on every playbook run
+
+### Installation
+* Control machine requires Python 2.6 or 2.7
+* Remote hosts do not require a client installation
+* http://docs.ansible.com/ansible/intro_installation.html
+* Can be installed via python using pip
+* Can be installed via package manager i.e. yum, apt after adding the PPA repository
+
 ### General
 * Ansible changes only deltas when possible
-* Uses SSH or paramiko to connect to remote hosts
+* Uses OpenSSH or paramiko to connect to remote hosts on linux
+* Uses powershell remote to connect to remote hosts on windows
+  * Control machine requires ```pip install "pywinrm>=0.2.2"```
 * Requires python 1.5 or higher on remote hosts
+* Windows isn’t supported for the control machine
 * Remote connections and tasks are executed in parallel
 	* Can be disabled using the 'serial' parameter on a particular task
 * The # of parallel connections can be changed via the ansible.cfg
@@ -11,7 +45,10 @@
 
 ### Text Editor setup
 * Install sublime text
-```brew cask install sublimetext-3```
+
+  ```brew cask install sublimetext-3```
+  or
+  ```choco install -y sublimetext3```
 * Install package control
 https://packagecontrol.io/installation
 * Install plugins ApplySyntax, Ansible, PrettyYaml, SidebarEnhancements
@@ -137,6 +174,9 @@ http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 * Can be attached at the playbook, play, role, or task level
 * Takes a boolean value, default ```false```
 * ```sudo_user:``` can be specified to sudo as a specific user
+* For Ansible 2.x
+  * To escalate privileges ```become: ```
+  * To become a different user ```become_user: apache```
 
 ### Inventories:Groups
 * are identified with this ```[example_group_name]```
