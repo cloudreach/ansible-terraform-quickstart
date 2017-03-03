@@ -27,6 +27,7 @@
 access_key="aws access key"
 secret_key="aws secret key"
 ```
+
 ### Installation
 * Control machine requires Python 2.6 or 2.7
 * Remote hosts do not require a client installation
@@ -35,8 +36,8 @@ secret_key="aws secret key"
 * Can be installed via package manager i.e. yum, apt after adding the PPA repository
 
 ### General
-* Ansible changes only deltas when possible
 * Uses OpenSSH or paramiko to connect to remote hosts on linux
+* Ansible changes only deltas when possible
 * Uses powershell remote to connect to remote hosts on windows
   * Control machine requires ```pip install "pywinrm>=0.2.2"```
 * Requires python 1.5 or higher on remote hosts
@@ -250,6 +251,7 @@ http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 ### Tags
 * Used to group tasks or roles
 * You can specifically call a set of tasks to run this way instead of the whole playbook
+* ```ansible-playbook main.yml --tags <tag name>```
 
 ### Local Actions
 * Run task on control machine

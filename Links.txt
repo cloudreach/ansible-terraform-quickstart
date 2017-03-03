@@ -13,3 +13,5 @@ Ansible Loops: http://docs.ansible.com/ansible/playbooks_loops.html
 Jinja2 Templating: http://jinja.pocoo.org/docs/dev/
 
 Ansible Quick Reference: https://github.com/lorin/ansible-quickref
+
+Ansible Dynamic Inventory AWS: http://docs.ansible.com/ansible/intro_dynamic_inventory.html#example-aws-ec2-external-inventory-script

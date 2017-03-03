@@ -1,3 +1,5 @@
 default_user: 'ec2-user'
 default_group: 'ec2-user'
 default_admin_group: 'admin'
+default_list: [1,2,3]
+default_map: {'a':'c', 'b':'c'}

@@ -2,17 +2,23 @@
 - hosts: example.hostname.com
   vars:
     example_var: this is a var
+  roles:
+    - { role: alertlogic.al_agents}
   tasks:
     - name: Use the command module
       command: echo Tyler Durden
       tags: fight_club
-
+    - user:
+        name: johnd
+        comment: "John Doe"
+        uid: 1040
+      become: true
     - name: Debug print a var
       debug: var=example_var
 
     - name: Install ruby package
       package: name=ruby state=present
-      become: yes
+      become: true
   handlers:
   tags:
     - royale_with_cheese
