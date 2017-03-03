@@ -1,4 +1,4 @@
-example.hostname.com
+example.hostname.com ansible_host=34.207.108.133
 
 [example_group_a]
 example.hostname1.com
