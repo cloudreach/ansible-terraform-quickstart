@@ -15,3 +15,8 @@
 - name: Copy file
   copy: src=example-static-file.txt dest=/tmp/example-static-file.txt owner=ubuntu group=ubuntu
   tags: static
+
+- name: install curl
+  package:
+    name: curl
+    state: latest

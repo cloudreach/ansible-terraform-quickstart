@@ -12,6 +12,7 @@
 
     - name: Install ruby package
       package: name=ruby state=present
+      become: yes
   handlers:
   tags:
     - royale_with_cheese
@@ -34,7 +35,5 @@
     - name: Debug print
       debug: var=format_output
 
-    - set_fact:
-        available_disks: "{{ (format_output.stdout|from_json) }}"
     - debug: var=available_disks
   tags: 2nd

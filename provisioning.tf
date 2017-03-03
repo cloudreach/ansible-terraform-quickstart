@@ -5,16 +5,17 @@ provider "aws" {
 }
 
 resource "aws_instance" "sandbox" {
-    ami = "${lookup(var.amis,var.region)}"
+    ami = "${var.ami}"
     instance_type = "${var.instance_size}"
     key_name = "${var.key_name}"
     subnet_id = "${var.subnet_id}"
     vpc_security_group_ids = ["${aws_security_group.sandbox_sg.id}" ]
     tags {
-    	Name = "ansible-sandbox"
+    	Name = "ansible-sandbox-${var.sandbox_owner}"
     	Group = "Sandbox"
     }
-    count = 1
+	associate_public_ip_address = true
+	count = 1
 }
 
 resource "aws_security_group" "sandbox_sg" {
@@ -26,7 +27,7 @@ resource "aws_security_group" "sandbox_sg" {
     	from_port = 22
     	to_port = 22
     	protocol = "TCP"
-    	cidr_blocks = ["0.0.0.0/0"]
+    	cidr_blocks = ["${var.ssh_cidr}"]
  	}
 
 	egress {

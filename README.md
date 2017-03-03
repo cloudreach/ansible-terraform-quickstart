@@ -171,7 +171,7 @@ http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 * Can be set dynamically using ```set_fact```
 * Can turn off fact collection for plays that do not require them using ```gather_facts: False```
 
-### Sudo
+### Escalated Privleges
 * Can be attached at the playbook, play, role, or task level
 * Takes a boolean value, default ```false```
 * ```sudo_user:``` can be specified to sudo as a specific user
