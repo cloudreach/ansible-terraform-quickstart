@@ -247,6 +247,9 @@ http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
 * Generate role directory structure
 	* ```ansible-galaxy init -p playbooks/roles example```
 * Role dependencies should be defined in ```roles/<name>/meta/main.yml```
+* Downloading/Installing a role
+    * Example from using a dependencies file and installing into roles folder
+    * ```ansible-galaxy install -r requirements.yml -p roles```
 
 ### Tags
 * Used to group tasks or roles
