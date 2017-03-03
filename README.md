@@ -43,7 +43,7 @@
 * A playbook can be restarted from where it failed
 	* A .retry file is created in your $HOME dir by default
 
-### Text Editor setup
+### Text Editor setup with Syntax highlights (Optional)
 * Install sublime text
 
   ```brew cask install sublimetext-3```
@@ -67,6 +67,7 @@ https://packagecontrol.io/installation
 
 ### ansible.cfg
 * Ansible looks for an ansible.cfg file in the following places, in this order:
+
 1. File specified by the ANSIBLE_CONFIG environment variable
 2. ./ansible.cfg (ansible.cfg in the current directory)
 3. ~/.ansible.cfg (.ansible.cfg in your home directory)
