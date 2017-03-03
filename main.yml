@@ -3,7 +3,7 @@
   vars:
     example_var: this is a var
   roles:
-    - { role: alertlogic.al_agents}
+    - { role: alertlogic.al_agents, become: true}
   tasks:
     - name: Use the command module
       command: echo Tyler Durden
