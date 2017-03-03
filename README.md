@@ -22,6 +22,11 @@
 * Facts
   * Information that is discovered about remote nodes automatically on every playbook run
 
+### Example terraform.tfvars file
+```
+access_key="aws access key"
+secret_key="aws secret key"
+```
 ### Installation
 * Control machine requires Python 2.6 or 2.7
 * Remote hosts do not require a client installation
