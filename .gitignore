@@ -1,2 +1,5 @@
 **/*.tfstate*
-terraform.tfvars
+**/terraform.tfvars
+**/.terraform
+.idea
+*.iml
