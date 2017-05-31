@@ -1,7 +1,7 @@
 # Terraform
 
 ## Overview
-###tfvars file
+### tfvars file
 * Used to store private key value pairs
 * Should not be committed to repo
 
