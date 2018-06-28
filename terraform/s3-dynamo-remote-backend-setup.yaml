@@ -1,44 +1,91 @@
-#test change for git
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creates S3 bucket and DynamoDB backends for Terraform remote storage
+
+Description: Creates S3 bucket and DynamoDB backends for Terraform remote storage and grant admin access policy
+
 Parameters:
   BucketName:
     Type: String
     Description: Used for bucket name - Ex. relus-terraform
+    Default: terraform-backend-bucket-0002-1
   TableName:
     Type: String
     Description: Used for dynamodb table name - Ex. relus-terraform
+    Default: terraform-backend-table-0002-1
   ServiceAccountUserArn:
     Type: String
+    Default: arn:aws:iam::551846224788:root
+
+
+
 Resources:
+  IAMAdminAccessRole:
+    Type: AWS::IAM::Role
+    Properties:
+         AssumeRolePolicyDocument:
+            Statement:
+              -
+                Effect: Allow
+                Principal:
+                  Service:
+                      - "s3.amazonaws.com"
+                Action:
+                        - "sts:AssumeRole"
+  IAMAdminAccessPoliciy:
+      Type: AWS::IAM::Policy
+      Properties:
+          PolicyName: AdminAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+                Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+          Roles:
+            - Ref: IAMAdminAccessRole
+      DependsOn: IAMAdminAccessRole
+  InstanceProfile:
+      Type: AWS::IAM::InstanceProfile
+      Properties:
+        Roles:
+          - Ref: IAMAdminAccessRole
+      DependsOn: IAMAdminAccessRole
+
   TerraformRemoteStateBucket:
     Type: AWS::S3::Bucket
+    DependsOn: IAMAdminAccessRole
     Properties:
       BucketName:
         Ref: BucketName
       AccessControl:  LogDeliveryWrite
       VersioningConfiguration:
         Status: Enabled
-  TerraformRemoteStateBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket:
-        Ref: TerraformRemoteStateBucket
-      PolicyDocument:
-        Version: '2012-10-17'
-        Id: PutObjPolicy
-        Statement:
-          - Effect: Allow
-            Action:
-            - s3:GetObject
-            - s3:PutObject
-            - s3:DeleteObject
-            Resource:
-            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}/*'
-            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}'
-            Principal:
-              AWS:
-                Ref: ServiceAccountUserArn
+#      BucketPolicy:
+#        Ref: IAMAdminAccessPoliciy
+
+
+
+#  TerraformRemoteStateBucketPolicy:
+#    Type: AWS::S3::BucketPolicy
+#    Properties:
+#      Bucket:
+#        Ref: TerraformRemoteStateBucket
+#      PolicyDocument:
+#        Ref: IAMAdminAccessPoliciy
+#    DependsOn: IAMAdminAccessRole
+#        Version: '2012-10-17'
+#        Id: PutObjPolicy
+#        Statement:
+#          - Effect: Allow
+#            Action:
+#            - s3:GetObject
+#            - s3:PutObject
+#            - s3:DeleteObject
+#            Resource:
+#            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}/*'
+#            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}'
+#            Principal:
+#              AWS:
+#                Ref: ServiceAccountUserArn
   TerraformRemoteStateTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -53,13 +100,15 @@ Resources:
         WriteCapacityUnits: '1'
       TableName:
         Ref: TableName
+
+
 Outputs:
   TerraformRemoteStateBucket:
     Value:
       Ref: TerraformRemoteStateBucket
-  TerraformRemoteStateBucketPolicy:
-    Value:
-      Ref: TerraformRemoteStateBucketPolicy
+#  TerraformRemoteStateBucketPolicy:
+#    Value:
+#      Ref: TerraformRemoteStateBucketPolicy
   TerraformRemoteStateTable:
     Value:
       Ref: TerraformRemoteStateTable
