@@ -1,43 +1,62 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creates S3 bucket and DynamoDB backends for Terraform remote storage
+
+Description: Creates S3 bucket and DynamoDB backends for Terraform remote storage and grant admin access policy
+
 Parameters:
   BucketName:
     Type: String
     Description: Used for bucket name - Ex. relus-terraform
+    Default: terraform-backend-bucket-0002-1
   TableName:
     Type: String
     Description: Used for dynamodb table name - Ex. relus-terraform
-  ServiceAccountUserArn:
-    Type: String
+    Default: terraform-backend-table-0002-1
+Mappings:
+  RegionAMIs:
+    us-east-1:
+      Name: ami-b70554c8
+
 Resources:
+  TerraformAutomationRole:
+    Type: AWS::IAM::Role
+    Properties:
+         AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: Allow
+                Principal:
+                  Service:
+                      - "s3.amazonaws.com"
+                      - "ec2.amazonaws.com"
+                Action:
+                        - "sts:AssumeRole"
+         Path: "/"
+         ManagedPolicyArns:
+            - 'arn:aws:iam::aws:policy/AdministratorAccess'
+
+  InstanceProfile:
+      Type: AWS::IAM::InstanceProfile
+      Properties:
+        Path: "/"
+        Roles:
+          - Ref: TerraformAutomationRole
+      DependsOn: TerraformAutomationRole
+
   TerraformRemoteStateBucket:
     Type: AWS::S3::Bucket
+    DependsOn: TerraformAutomationRole
     Properties:
       BucketName:
         Ref: BucketName
       AccessControl:  LogDeliveryWrite
       VersioningConfiguration:
         Status: Enabled
-  TerraformRemoteStateBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket:
-        Ref: TerraformRemoteStateBucket
-      PolicyDocument:
-        Version: '2012-10-17'
-        Id: PutObjPolicy
-        Statement:
-          - Effect: Allow
-            Action:
-            - s3:GetObject
-            - s3:PutObject
-            - s3:DeleteObject
-            Resource:
-            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}/*'
-            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}'
-            Principal:
-              AWS:
-                Ref: ServiceAccountUserArn
+      Tags:
+          -
+            Key: "Name"
+            Value: "S3Bucket"
+
   TerraformRemoteStateTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -52,13 +71,11 @@ Resources:
         WriteCapacityUnits: '1'
       TableName:
         Ref: TableName
+
 Outputs:
   TerraformRemoteStateBucket:
     Value:
       Ref: TerraformRemoteStateBucket
-  TerraformRemoteStateBucketPolicy:
-    Value:
-      Ref: TerraformRemoteStateBucketPolicy
   TerraformRemoteStateTable:
     Value:
       Ref: TerraformRemoteStateTable
