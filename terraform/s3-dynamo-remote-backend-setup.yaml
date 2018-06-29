@@ -11,15 +11,6 @@ Parameters:
     Type: String
     Description: Used for dynamodb table name - Ex. relus-terraform
     Default: terraform-backend-table-0002-1
-#  us-east-1-shared:
-#    Type: AWS::EC2::KeyPair::us-east-1-shared
-#    Description: SSH Key pair for EC2 Instance
-
-
-#  ServiceAccountUserArn:
-#    Type: String
-#    Default: arn:aws:iam::551846224788:root
-
 Mappings:
   RegionAMIs:
     us-east-1:
@@ -43,20 +34,6 @@ Resources:
          Path: "/"
          ManagedPolicyArns:
             - 'arn:aws:iam::aws:policy/AdministratorAccess'
-#  IAMAdminAccessPoliciy:
-#      Type: AWS::IAM::Policy   #Not able to provide Refrence, Need your help in this.
-#      Properties:
-#          Path: "/"            #Throwing an error, unsupported property 'path'.
-#          PolicyName: AdminAccess
-#          PolicyDocument:
-#            Version: "2012-10-17"
-#            Statement:
-#                Effect: "Allow"
-#                Action: "*"
-#                Resource: "*"
-#          Roles:
-#            - Ref: TerraformAutomationRole
-#      DependsOn: TerraformAutomationRole
 
   InstanceProfile:
       Type: AWS::IAM::InstanceProfile
@@ -65,22 +42,6 @@ Resources:
         Roles:
           - Ref: TerraformAutomationRole
       DependsOn: TerraformAutomationRole
-
-  TerraformEc2Instance:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId: !FindInMap [RegionAMIs, !Ref "AWS::Region", Name]
-      KeyName: "us-east-1-shared"
-      InstanceType: t2.micro
-      SecurityGroupIds:
-        -
-          Ref: SSHAccessSG
-      Tags:
-          -
-           Key: "Name"
-           Value: "EC2Instance"
-      IamInstanceProfile:
-        Ref: InstanceProfile
 
   TerraformRemoteStateBucket:
     Type: AWS::S3::Bucket
@@ -96,46 +57,6 @@ Resources:
             Key: "Name"
             Value: "S3Bucket"
 
-  SSHAccessSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Allow SSH access to EC2 Instance
-      SecurityGroupIngress:
-        FromPort:   "22"
-        ToPort:     "22"
-        IpProtocol:  tcp
-        CidrIp:     "0.0.0.0/0"
-      Tags:
-        -
-          Key: "Name"
-          Value: "SSHAccessSG"
-#      BucketPolicy:
-#        Ref: IAMAdminAccessPoliciy
-
-
-
-#  TerraformRemoteStateBucketPolicy:
-#    Type: AWS::S3::BucketPolicy
-#    Properties:
-#      Bucket:
-#        Ref: TerraformRemoteStateBucket
-#      PolicyDocument:
-#        Ref: IAMAdminAccessPoliciy
-#    DependsOn: IAMAdminAccessRole
-#        Version: '2012-10-17'
-#        Id: PutObjPolicy
-#        Statement:
-#          - Effect: Allow
-#            Action:
-#            - s3:GetObject
-#            - s3:PutObject
-#            - s3:DeleteObject
-#            Resource:
-#            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}/*'
-#            - Fn::Sub: 'arn:aws:s3:::${TerraformRemoteStateBucket}'
-#            Principal:
-#              AWS:
-#                Ref: ServiceAccountUserArn
   TerraformRemoteStateTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -151,14 +72,10 @@ Resources:
       TableName:
         Ref: TableName
 
-
 Outputs:
   TerraformRemoteStateBucket:
     Value:
       Ref: TerraformRemoteStateBucket
-#  TerraformRemoteStateBucketPolicy:
-#    Value:
-#      Ref: TerraformRemoteStateBucketPolicy
   TerraformRemoteStateTable:
     Value:
       Ref: TerraformRemoteStateTable
