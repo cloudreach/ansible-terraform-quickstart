@@ -30,6 +30,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
          AssumeRolePolicyDocument:
+            Version: "2012-10-17"
             Statement:
               -
                 Effect: Allow
@@ -39,26 +40,28 @@ Resources:
                       - "ec2.amazonaws.com"
                 Action:
                         - "sts:AssumeRole"
-
-  IAMAdminAccessPoliciy:
-      Type: AWS::IAM::Policy   #Not able to provide Refrence, Need your help in this.
-      Properties:
+         Path: "/"
+         ManagedPolicyArns:
+            - 'arn:aws:iam::aws:policy/AdministratorAccess'
+#  IAMAdminAccessPoliciy:
+#      Type: AWS::IAM::Policy   #Not able to provide Refrence, Need your help in this.
+#      Properties:
 #          Path: "/"            #Throwing an error, unsupported property 'path'.
-          PolicyName: AdminAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-                Effect: "Allow"
-                Action: "*"
-                Resource: "*"
-          Roles:
-            - Ref: TerraformAutomationRole
-      DependsOn: TerraformAutomationRole
+#          PolicyName: AdminAccess
+#          PolicyDocument:
+#            Version: "2012-10-17"
+#            Statement:
+#                Effect: "Allow"
+#                Action: "*"
+#                Resource: "*"
+#          Roles:
+#            - Ref: TerraformAutomationRole
+#      DependsOn: TerraformAutomationRole
 
   InstanceProfile:
       Type: AWS::IAM::InstanceProfile
       Properties:
-#        Path: "/"
+        Path: "/"
         Roles:
           - Ref: TerraformAutomationRole
       DependsOn: TerraformAutomationRole
