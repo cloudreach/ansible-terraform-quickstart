@@ -4,4 +4,4 @@ https://www.terraform.io/docs/state/remote.html
 https://opencredo.com/terraform-infrastructure-design-patterns/
 https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9#.m4w3mwf4p
 https://blog.gruntwork.io/how-to-create-reusable-infrastructure-with-terraform-modules-25526d65f73d#.ewym3ekgn
-https://charity.wtf/tag/terraform/
+https://charity.wtf/tag/terraform/asdf
